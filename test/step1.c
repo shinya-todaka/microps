@@ -2,6 +2,7 @@
 #include "test.h"
 #include "util.h"
 #include "net.h"
+#include "driver/dummy.h"
 
 static volatile sig_atomic_t terminate;
 
@@ -22,7 +23,10 @@ main(int argc, char *argv[])
         errorf("net_init() failure");
         return -1;
     }
+
     dev = dummy_init();
+    infof("dev pointer = %p after dummy init", dev);
+
     if (!dev) {
         errorf("dummy_init() failure");
         return -1;

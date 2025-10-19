@@ -1,8 +1,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stddef.h>
-#include "../net.h"
-#include "../util.h"
+#include "net.h"
+#include "util.h"
 
 #define DUMMY_MTU UINT16_MAX
 
@@ -24,6 +24,8 @@ dummy_init(void)
     struct net_device *dev;
 
     dev = net_device_alloc();
+    infof("dev=%p", dev);
+
     if (!dev) {
         errorf("net_device_alloc() failure");
         return NULL;
@@ -37,6 +39,6 @@ dummy_init(void)
         errorf("net_device_register() failure");
         return NULL;
     }
-    debugf("initialized, dev=%s", dev->name);
+    infof("dev=%p after net device register", dev);
     return dev;
 }

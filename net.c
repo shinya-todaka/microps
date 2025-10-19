@@ -8,9 +8,7 @@ struct net_device *
 net_device_alloc(void)
 {
     struct net_device *dev;
-
-    dev = memory_alloc(sizeof(*dev));
-
+    dev = (struct net_device *)memory_alloc(sizeof(*dev));
     if (!dev) {
         errorf("memory_alloc() failure");
         return NULL;
@@ -24,7 +22,7 @@ net_device_register(struct net_device *dev)
     static unsigned int index = 0;
 
     dev->index = index++;
-    sprintf(dev->name, sizeof(dev->name), "net%d", dev->index);
+    snprintf(dev->name, sizeof(dev->name), "net%d", dev->index);
     dev->next = devices;
     devices = dev;
     infof("registered, dev=%s, type=0x%04x", dev->name, dev->type);
@@ -70,6 +68,7 @@ net_device_close(struct net_device *dev)
 
 int
 net_device_output(struct net_device *dev, uint16_t type, const uint8_t *data, size_t len, const void *dest) {
+
     if (!NET_DEVICE_IS_UP(dev)) {
         errorf("not opened, dev=%s", dev->name);
         return -1;
